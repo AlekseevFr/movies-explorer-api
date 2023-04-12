@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
+const { handleError } = require('./middlewares/handleError');
+const router = require('./routes');
 
 const app = express();
 
@@ -16,3 +18,5 @@ app.listen(PORT, () => {
   console.log(BASE_PATH);
 });
 app.use(bodyParser.json());
+app.use(router);
+app.use(handleError);
