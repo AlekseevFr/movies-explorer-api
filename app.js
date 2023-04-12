@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-
 const bodyParser = require('body-parser');
 const { handleError } = require('./middlewares/handleError');
 const router = require('./routes');
