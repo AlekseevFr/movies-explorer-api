@@ -6,6 +6,7 @@ const { errors } = require('celebrate');
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { handleError } = require('./middlewares/handleError');
+const { limiter } = require('./middlewares/limiter');
 
 const router = require('./routes');
 
@@ -18,7 +19,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
 });
 
 app.use(cors());
-
+app.use(limiter);
 app.use(bodyParser.json());
 app.use(requestLogger);
 app.use(router);
