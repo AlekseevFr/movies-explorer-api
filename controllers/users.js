@@ -34,9 +34,7 @@ const createUser = (req, res, next) => {
       if (err.code === 11000) {
         const conflictError = new Conflict('Пользователь уже зарегестрирован');
         next(conflictError);
-        return;
-      }
-      if (err.name === 'ValidationError') {
+      } else if (err.name === 'ValidationError') {
         next(new BadRequest('Некорректные данные карточки'));
       } else {
         next(err);
@@ -60,6 +58,9 @@ const updateUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Некорректные данные карточки'));
+      } else if (err.code === 11000) {
+        const conflictError = new Conflict('Пользователь уже зарегестрирован');
+        next(conflictError);
       } else {
         const InternalError = new Internal('Ошибка сервера');
         next(InternalError);

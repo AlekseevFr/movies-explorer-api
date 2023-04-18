@@ -19,6 +19,7 @@ router.post(
       owner: Joi.string().required(),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
+      movieId: Joi.number().required(),
     }),
   }),
   createMovie,

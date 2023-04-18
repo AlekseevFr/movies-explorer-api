@@ -13,9 +13,11 @@ const router = require('./routes');
 
 const app = express();
 
-const { PORT = 3000, BASE_PATH } = process.env;
+const {
+  PORT = 3000, BASE_PATH, NODE_ENV, MONGO_DB,
+} = process.env;
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
+mongoose.connect(NODE_ENV === 'production' ? MONGO_DB : 'mongodb://127.0.0.1:27017/bitfilmsdb', {
   useNewUrlParser: true,
 });
 
