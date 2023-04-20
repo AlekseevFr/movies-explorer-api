@@ -1,3 +1,12 @@
+const CODES = {
+  CONFLICT: 409,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  UNAUTHORIZED: 401,
+  BAD_REQUEST: 400,
+  INTERNAL: 500,
+};
+
 const MESSAGES = {
   USER_CONFLICT: 'Пользователь с таким email уже существует',
   MOVIE_CONFLICT: 'Фильм с таким id уже существует',
@@ -10,5 +19,5 @@ const MESSAGES = {
 };
 
 module.exports = {
-  MESSAGES,
+  MESSAGES, CODES,
 };
