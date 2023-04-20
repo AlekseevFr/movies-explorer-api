@@ -6,7 +6,7 @@ const { NotFound } = require('../errors/NotFound');
 const { Forbidden } = require('../errors/Forbidden');
 
 const getMovies = (req, res, next) => {
-  Movie.find({}).populate('owner').sort({ createdAt: -1 })
+  Movie.find({ owner: req.user._id }).populate('owner').sort({ createdAt: -1 })
     .then((movies) => res.status(constants.HTTP_STATUS_OK).send({ data: movies }))
     .catch(next);
 };

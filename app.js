@@ -22,9 +22,9 @@ mongoose.connect(NODE_ENV === 'production' ? MONGO_DB : 'mongodb://127.0.0.1:270
 });
 
 app.use(cors());
-app.use(limiter);
 app.use(bodyParser.json());
 app.use(requestLogger);
+app.use(limiter);
 app.use(helmet());
 app.use(router);
 app.use(errorLogger);
