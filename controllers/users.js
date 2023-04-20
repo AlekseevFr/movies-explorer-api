@@ -6,6 +6,7 @@ const { NotFound } = require('../errors/NotFound');
 const { Conflict } = require('../errors/Conflict');
 const { BadRequest } = require('../errors/BadRequest');
 const { Internal } = require('../errors/Internal');
+const { MESSAGES } = require('../constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -32,10 +33,10 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        const conflictError = new Conflict('Пользователь уже зарегестрирован');
+        const conflictError = new Conflict(MESSAGES.USER_CONFLICT);
         next(conflictError);
       } else if (err.name === 'ValidationError') {
-        next(new BadRequest('Некорректные данные карточки'));
+        next(new BadRequest(MESSAGES.WRONG_DATA));
       } else {
         next(err);
       }
@@ -51,7 +52,7 @@ const updateUser = (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        return next(new NotFound('Пользователь не найден'));
+        return next(new NotFound(MESSAGES.NOT_FOUND));
       }
       return res.send(user);
     })
@@ -59,10 +60,10 @@ const updateUser = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Некорректные данные карточки'));
       } else if (err.code === 11000) {
-        const conflictError = new Conflict('Пользователь уже зарегестрирован');
+        const conflictError = new Conflict(MESSAGES.USER_CONFLICT);
         next(conflictError);
       } else {
-        const InternalError = new Internal('Ошибка сервера');
+        const InternalError = new Internal(MESSAGES.SERVER_ERROR);
         next(InternalError);
       }
     });

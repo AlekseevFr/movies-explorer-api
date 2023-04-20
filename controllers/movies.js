@@ -4,6 +4,7 @@ const { BadRequest } = require('../errors/BadRequest');
 const { Internal } = require('../errors/Internal');
 const { NotFound } = require('../errors/NotFound');
 const { Forbidden } = require('../errors/Forbidden');
+const { MESSAGES } = require('../constants');
 
 const getMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id }).populate('owner').sort({ createdAt: -1 })
@@ -36,9 +37,9 @@ const createMovie = (req, res, next) => {
     .catch((err) => {
       console.log(err);
       if (err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные фильма'));
+        next(new BadRequest(MESSAGES.WRONG_DATA));
       } else {
-        next(new Internal('Ошибка сервера'));
+        next(new Internal(MESSAGES.SERVER_ERROR));
       }
     });
 };
@@ -48,14 +49,14 @@ const deleteMovie = (req, res, next) => {
   Movie.findById(_id).populate('owner')
     .then((movie) => {
       if (!movie) {
-        return next(new NotFound('Фильм не найден'));
+        return next(new NotFound(MESSAGES.NOT_FOUND));
       }
 
       const ownerId = movie.owner.id;
       const userId = req.user._id;
 
       if (ownerId !== userId) {
-        return next(new Forbidden('Удалить можно только свой фильм'));
+        return next(new Forbidden(MESSAGES.FORBIDDEN));
       }
 
       return Movie.findByIdAndRemove(_id).then((resp) => res.send(resp));

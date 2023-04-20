@@ -6,6 +6,7 @@ const auth = require('../middlewares/auth');
 const { NotFound } = require('../errors/NotFound');
 const { login, createUser } = require('../controllers/users');
 const { upValid, inValid } = require('../validators/signValid');
+const { MESSAGES } = require('../constants');
 
 router.all('*', express.json());
 
@@ -23,7 +24,7 @@ router.use('/users', users);
 router.use('/movies', movies);
 
 router.all('*', (req, res, next) => {
-  next(new NotFound('Запрос не найден'));
+  next(new NotFound(MESSAGES.NOT_FOUND));
 });
 
 module.exports = router;
