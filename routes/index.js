@@ -1,11 +1,11 @@
 const express = require('express');
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
 const users = require('./users');
 const movies = require('./movies');
 const auth = require('../middlewares/auth');
 const { NotFound } = require('../errors/NotFound');
 const { login, createUser } = require('../controllers/users');
+const { upValid, inValid } = require('../validators/signValid');
 
 router.all('*', express.json());
 
@@ -14,27 +14,8 @@ router.get('/crash-test', () => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
-router.post(
-  '/signup',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-      name: Joi.string().min(2).max(30).required(),
-    }),
-  }),
-  createUser,
-);
-router.post(
-  '/signin',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-    }),
-  }),
-  login,
-);
+router.post('/signup', upValid, createUser);
+router.post('/signin', inValid, login);
 
 router.all('*', auth);
 
